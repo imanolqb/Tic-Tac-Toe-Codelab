@@ -20,7 +20,7 @@ The application allows users to play the classic game of Tic Tac Toe, where they
 
 Explore the code, contribute, and have fun playing Tic Tac Toe!
 
-## Screenshots and Descriptions
+## Descriptions
 
 1. **Main Menu**  
    * **Description**: The starting point of the application where users can choose to play against a friend or the computer.
