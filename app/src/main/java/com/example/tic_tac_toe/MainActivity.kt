@@ -41,12 +41,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.tic_tac_toe.logic.checkWinner
-import com.example.tic_tac_toe.logic.isBoardFull
+import com.example.tic_tac_toe.logic.Board
 import com.example.tic_tac_toe.logic.makeCpuMove
 import com.example.tic_tac_toe.ui.theme.GameResultDialog
 import com.example.tic_tac_toe.ui.theme.TictactoeTheme
-import com.example.tic_tac_toe.ui.theme.ticTacToeBoard
+import com.example.tic_tac_toe.ui.theme.ticTacToeBoardDrawing
 import kotlinx.coroutines.delay
 
 class MainActivity : ComponentActivity() {
@@ -77,9 +76,9 @@ fun SplashScreen(onTimeout: () -> Unit) {
     }
 
     LaunchedEffect(Unit) {
-        delay(2000L) // Tiempo de espera (en milisegundos)
-        alpha.animateTo(0f, animationSpec = tween(durationMillis = 500)) // Desvanecer
-        onTimeout() // Llama a la función que cambia a la pantalla principal
+        delay(2000L)
+        alpha.animateTo(0f, animationSpec = tween(durationMillis = 500))
+        onTimeout()
     }
 }
 
@@ -99,7 +98,7 @@ fun MainContent() {
 @Composable
 fun GameScreen() {
     var gameMode by remember { mutableStateOf<GameMode?>(null) }
-    var board by remember { mutableStateOf(List(3) { MutableList(3) { "" } }) }
+    val board by remember { mutableStateOf(Board()) }
     var currentPlayer by remember { mutableStateOf("X") }
     var isDrawing by remember { mutableStateOf(true) }
     var winner by remember { mutableStateOf<String?>(null) }
@@ -223,7 +222,7 @@ fun GameScreen() {
                     modifier = Modifier.size(100.dp)
                         .clickable {
                             gameMode = null
-                            board = List(3) { MutableList(3) { "" } }
+                            board.reset()
                             currentPlayer = "X"
                             winner = null
                             isGameOver = false
@@ -246,7 +245,7 @@ fun GameScreen() {
                         .padding(8.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    ticTacToeBoard(modifier = Modifier.fillMaxSize(),
+                    ticTacToeBoardDrawing(modifier = Modifier.fillMaxSize(),
                         onDrawingComplete = {isDrawing = false})
 
                     Column {
@@ -257,20 +256,18 @@ fun GameScreen() {
                                         modifier = Modifier
                                             .size(90.dp)
                                             .clickable(
-                                                enabled = board[row][col].isEmpty() && winner == null && !cpuDelay
+                                                enabled = board.getCell(row, col).isEmpty() && winner == null && !cpuDelay
                                             )
                                             {
-
-
-                                                if (board[row][col].isEmpty() && !isDrawing) {
-                                                    board[row][col] = currentPlayer
-                                                    winner = checkWinner(board)
+                                                if (board.getCell(row, col).isEmpty() && !isDrawing) {
+                                                    board.setCell(row, col, currentPlayer)
+                                                    winner = board.checkWinner()
 
                                                     // Draw verify
-                                                    if (isBoardFull(board)) {
-                                                        // Delay before reload
-                                                        board = List(3) { MutableList(3) { "" } } // board relay
-                                                        if (currentPlayer == "X") currentPlayer = "O" else currentPlayer = "X" // player relay
+                                                    if (board.isFull()) {
+                                                        board.reset()
+                                                        currentPlayer =
+                                                            if (currentPlayer == "X") "O" else "X" // player relay
                                                         winner = null // winner relay
                                                         isGameOver = false // end game state relay
                                                     } else if (winner != null) {
@@ -288,7 +285,7 @@ fun GameScreen() {
                                             },
                                         contentAlignment = Alignment.Center
                                     ) {
-                                        when (board[row][col]) {
+                                        when (board.getCell(row, col)) {
                                             "X" -> Image(
                                                 painter = painterResource(id = R.drawable.new_cross),
                                                 contentDescription = "X",
@@ -312,7 +309,7 @@ fun GameScreen() {
                     GameResultDialog(
                         winner = winner,
                         onRestart = {
-                            board = List(3) { MutableList(3) { "" } }
+                            board.reset()
                             currentPlayer = "X"
                             winner = null
                             isGameOver = false
@@ -320,7 +317,7 @@ fun GameScreen() {
                         },
                         onReturnToMenu = {
                             gameMode = null
-                            board = List(3) { MutableList(3) { "" } }
+                            board.reset()
                             currentPlayer = "X"
                             winner = null
                             isGameOver = false
@@ -332,8 +329,8 @@ fun GameScreen() {
                 if (cpuDelay && currentPlayer == "O") {
                     LaunchedEffect(cpuDelay) {
                         makeCpuMove(board)
-                        winner = checkWinner(board)
-                        if (winner == null && !isBoardFull(board)) {
+                        winner = board.checkWinner()
+                        if (winner == null && !board.isFull()) {
                             currentPlayer = "X"
                         } else {
                             showDialog = true

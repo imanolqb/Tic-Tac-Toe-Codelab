@@ -1,5 +1,23 @@
 package com.example.tic_tac_toe.logic
 
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.RecomposeScope
+import androidx.compose.runtime.mutableStateOf
+
+/**
+ * The Board class represents a Tic-Tac-Toe board consisting of a 3x3 grid of cells.
+ * It provides methods for interacting with the board, such as retrieving and setting cell values,
+ * checking for a full board, resetting the board, and determining a winner.
+ *
+ * [getCell] provides the state of a specific cell.
+ * [setCell] sets the value of a specific cell if the cell is empty.
+ * [isFull] checks if the board is fully occupied.
+ * [reset] clears all cells, resetting the board to an empty state.
+ * [checkWinner] checks if there is a winner by evaluating rows, columns, and diagonals.
+ * [copy] creates a duplicate of the current board with the same state.
+ */
+
 class Board {
     private val board: MutableList<MutableList<String>> = MutableList(3) { MutableList(3) { "" } }
 
@@ -52,5 +70,15 @@ class Board {
 
         // No winner
         return null
+    }
+
+    fun copy(): Board {
+        val newBoard = Board()
+        for (row in 0..2) {
+            for (col in 0..2) {
+                newBoard.setCell(row, col, this.getCell(row, col))
+            }
+        }
+        return newBoard
     }
 }

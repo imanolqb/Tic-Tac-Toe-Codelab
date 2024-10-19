@@ -15,7 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.runtime.Composable as Composable1
 
 @Composable1
-fun ticTacToeBoard(modifier: Modifier = Modifier,
+fun ticTacToeBoardDrawing(modifier: Modifier = Modifier,
                    onDrawingComplete: () -> Unit): Boolean {
 
     val lineLength1 = remember { Animatable(0f) }
