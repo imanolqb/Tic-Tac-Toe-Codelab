@@ -1,4 +1,9 @@
-# Tic Tac Toe
+<a href="https://www.eii.ulpgc.es" target="_blank"><img src="https://www.eii.ulpgc.es/sites/default/files/eii-acron-mod.png" alt="EII-ULPGC" align="right" width="516" height="150" /></a>
+# TIC-TAC-TOE.
+
+> - Mobile app for the classic Tic Tac Toe game
+> - Developed in Kotlin at the initiative of ULPGC students
+> - [Explore the code on GitHub](https://github.com/imanolqb/Tic-Tac-Toe-Codelab/tree/main/app/src/main/java/com/example/tic_tac_toe)
 
 ## Description
 
