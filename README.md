@@ -7,7 +7,7 @@
 
 ## Description
 
-Tic Tac Toe is a mobile application developed in Kotlin using Android Studio. This project represents the second Codelab of the Native Mobile Application Programming (PAMN) course in the fourth year of the Computer Engineering degree at the University of Las Palmas de Gran Canaria (ULPGC).
+*Tic Tac Toe* is a mobile application developed in Kotlin using Android Studio. This project represents the second Codelab of the Native Mobile Application Programming (PAMN) course in the fourth year of the Computer Engineering degree at the University of Las Palmas de Gran Canaria (ULPGC).
 
 The application allows users to play the classic game of Tic Tac Toe, where they can challenge a friend or play against a computer that checks for winning moves. This project not only puts Kotlin programming concepts into practice but also addresses fundamental aspects of mobile application development, such as user interface design, event management, and game logic.
 
